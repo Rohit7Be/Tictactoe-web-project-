@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic-Tac-Toe Game</title>
+<style>
+body{
+  background-image: url("backg.jpg");
+  background-size: cover;
+  background-color: yellow;
+  padding: 70px 0;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.board {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  border: 5px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  cursor: pointer;
+  background-color: #78E834;
+}
+
+#message {
+  margin-top: 20px;
+  font-size: 50px;
+  color:white;
+}
+
+</style>
+</head>
+<body>
+<div id="tic-tac-toe">
+  <h1 style=color:yellow><u>Tic-Tac-Toe Game</u></h1>
+<h3 style="color:white;"><i>Created By: Rohit singh</i></h3>
+  <div class="board">
+    <div class="cell" onclick="playerMove(0)"></div>
+    <div class="cell" onclick="playerMove(1)"></div>
+    <div class="cell" onclick="playerMove(2)"></div>
+    <div class="cell" onclick="playerMove(3)"></div>
+    <div class="cell" onclick="playerMove(4)"></div>
+    <div class="cell" onclick="playerMove(5)"></div>
+    <div class="cell" onclick="playerMove(6)"></div>
+    <div class="cell" onclick="playerMove(7)"></div>
+    <div class="cell" onclick="playerMove(8)"></div>
+  </div>
+  <div id="message"></div>
+  <button onclick="resetGame()">Reset</button>
+</div>
+<script>
+let currentPlayer = "X";
+let board = ['', '', '', '', '', '', '', '', ''];
+let gameOver = false;
+
+function playerMove(cellIndex) {
+  if (!gameOver && board[cellIndex] === '') {
+    board[cellIndex] = currentPlayer;
+    renderBoard();
+    checkWinner();
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+  }
+}
+
+function renderBoard() {
+  const cells = document.querySelectorAll('.cell');
+  cells.forEach((cell, index) => {
+    cell.textContent = board[index];
+  });
+}
+
+function checkWinner() {
+  const winningConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+
+  for (let condition of winningConditions) {
+    const [a, b, c] = condition;
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      document.getElementById("message").textContent = `${currentPlayer} wins!`;
+      gameOver = true;
+      return;
+    }
+  }
+
+  if (!board.includes('')) {
+    document.getElementById("message").textContent = "It's a draw!";
+    gameOver = true;
+    return;
+  }
+}
+
+function resetGame() {
+  currentPlayer = "X";
+  board = ['', '', '', '', '', '', '', '', ''];
+  gameOver = false;
+  document.getElementById("message").textContent = '';
+  renderBoard();
+}
+
+</script>
+</body>
+</html>
